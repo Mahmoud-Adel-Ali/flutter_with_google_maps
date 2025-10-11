@@ -10,6 +10,7 @@ class CustomGoogleMapView extends StatefulWidget {
 
 class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
   late CameraPosition initialCameraPosition;
+  late GoogleMapController mapController;
 
   @override
   void initState() {
@@ -19,16 +20,23 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    mapController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: GoogleMap(
         initialCameraPosition: initialCameraPosition,
+        onMapCreated: (controller) => mapController = controller,
         // camera target bounds is used to limit the zoom level & position
         // and it take two axis points
-        cameraTargetBounds: CameraTargetBounds(LatLngBounds(
-          northeast: const LatLng(100, 100),
-          southwest: const LatLng(100, 100),
-        )),
+        // cameraTargetBounds: CameraTargetBounds(LatLngBounds(
+        //   northeast: const LatLng(100, 100),
+        //   southwest: const LatLng(100, 100),
+        // )),
       ),
     );
   }
