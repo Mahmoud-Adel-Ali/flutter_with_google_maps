@@ -21,7 +21,15 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GoogleMap(initialCameraPosition: initialCameraPosition),
+      body: GoogleMap(
+        initialCameraPosition: initialCameraPosition,
+        // camera target bounds is used to limit the zoom level & position
+        // and it take two axis points
+        cameraTargetBounds: CameraTargetBounds(LatLngBounds(
+          northeast: const LatLng(100, 100),
+          southwest: const LatLng(100, 100),
+        )),
+      ),
     );
   }
 }
