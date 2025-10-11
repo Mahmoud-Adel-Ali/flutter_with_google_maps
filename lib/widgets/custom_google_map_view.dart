@@ -14,7 +14,8 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
   @override
   void initState() {
     super.initState();
-    initialCameraPosition = const CameraPosition(target: LatLng(100, 100));
+    initialCameraPosition =
+        const CameraPosition(target: LatLng(100, 100), zoom: 12);
   }
 
   @override
@@ -24,3 +25,10 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
     );
   }
 }
+
+// How to set the zoom level
+// World View : 0 -> 3
+// Continent View : 4 -> 
+// City View : 8 -> 12
+// Street View : 13 -> 17
+// Building View : 18 -> 20
