@@ -16,6 +16,7 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
   @override
   void initState() {
     super.initState();
+    initMarkers();
     initialCameraPosition =
         const CameraPosition(target: LatLng(100, 100), zoom: 12);
   }
@@ -73,6 +74,15 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
         .loadString('assets/map_styles/night_map_style.json');
 
     mapController.setMapStyle(nightMapStyle);
+  }
+
+  void initMarkers() {
+    const newMarker = Marker(
+      markerId: MarkerId('1'),
+      position: LatLng(29.8552649548856, 29.8552649548856),
+      infoWindow: InfoWindow(title: 'Marker 1'),
+    );
+    markers.add(newMarker);
   }
 }
 
