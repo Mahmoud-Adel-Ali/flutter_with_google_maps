@@ -17,7 +17,6 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
     super.initState();
     initialCameraPosition =
         const CameraPosition(target: LatLng(100, 100), zoom: 12);
-    initMapStyle();
   }
 
   @override
@@ -33,7 +32,10 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
         children: [
           GoogleMap(
             initialCameraPosition: initialCameraPosition,
-            onMapCreated: (controller) => mapController = controller,
+            onMapCreated: (controller) {
+              mapController = controller;
+              initMapStyle();
+            },
             // camera target bounds is used to limit the zoom level & position
             // and it take two axis points
             // cameraTargetBounds: CameraTargetBounds(LatLngBounds(
@@ -64,7 +66,12 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
     );
   }
 
-  void initMapStyle() {}
+  void initMapStyle() async {
+    var nightMapStyle = await DefaultAssetBundle.of(context)
+        .loadString('assets/map_styles/night_map_style.json');
+
+    mapController.setMapStyle(nightMapStyle);
+  }
 }
 
 // How to set the zoom level
