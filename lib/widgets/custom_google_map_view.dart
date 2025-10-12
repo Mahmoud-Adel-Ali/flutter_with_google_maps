@@ -28,15 +28,37 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GoogleMap(
-        initialCameraPosition: initialCameraPosition,
-        onMapCreated: (controller) => mapController = controller,
-        // camera target bounds is used to limit the zoom level & position
-        // and it take two axis points
-        // cameraTargetBounds: CameraTargetBounds(LatLngBounds(
-        //   northeast: const LatLng(100, 100),
-        //   southwest: const LatLng(100, 100),
-        // )),
+      body: Stack(
+        children: [
+          GoogleMap(
+            initialCameraPosition: initialCameraPosition,
+            onMapCreated: (controller) => mapController = controller,
+            // camera target bounds is used to limit the zoom level & position
+            // and it take two axis points
+            // cameraTargetBounds: CameraTargetBounds(LatLngBounds(
+            //   northeast: const LatLng(100, 100),
+            //   southwest: const LatLng(100, 100),
+            // )),
+          ),
+          Positioned(
+            bottom: 24,
+            right: 64,
+            left: 64,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.amber.shade300,
+              ),
+              onPressed: () {
+                mapController.animateCamera(
+                  // CameraUpdate.newCameraPosition(cameraPosition)
+                  CameraUpdate.newLatLng(
+                      const LatLng(29.8552649548856, 29.8552649548856)),
+                );
+              },
+              child: const Text('Zoom In'),
+            ),
+          )
+        ],
       ),
     );
   }
