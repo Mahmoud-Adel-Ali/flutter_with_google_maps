@@ -11,6 +11,7 @@ class CustomGoogleMapView extends StatefulWidget {
 class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
   late CameraPosition initialCameraPosition;
   late GoogleMapController mapController;
+  Set<Marker> markers = {};
 
   @override
   void initState() {
@@ -31,6 +32,7 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
       body: Stack(
         children: [
           GoogleMap(
+            markers: markers,
             initialCameraPosition: initialCameraPosition,
             onMapCreated: (controller) {
               mapController = controller;
