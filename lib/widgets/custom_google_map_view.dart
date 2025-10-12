@@ -82,8 +82,8 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
       markers.add(
         Marker(
           markerId: MarkerId(place.id.toString()),
-          position: place.position,
           infoWindow: InfoWindow(title: place.name),
+          position: place.position,
         ),
       );
     });
