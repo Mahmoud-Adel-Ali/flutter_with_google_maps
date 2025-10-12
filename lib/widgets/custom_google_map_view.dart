@@ -77,13 +77,18 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
     mapController.setMapStyle(nightMapStyle);
   }
 
-  void initMarkers() {
+  void initMarkers() async {
+    var markerIcon = await BitmapDescriptor.asset(
+      const ImageConfiguration(),
+      'assets/images/marker_icon.png',
+    );
     places.map((place) {
       markers.add(
         Marker(
           markerId: MarkerId(place.id.toString()),
           infoWindow: InfoWindow(title: place.name),
           position: place.position,
+          icon: markerIcon,
         ),
       );
     });
