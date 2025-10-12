@@ -17,6 +17,7 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
     super.initState();
     initialCameraPosition =
         const CameraPosition(target: LatLng(100, 100), zoom: 12);
+    initMapStyle();
   }
 
   @override
@@ -62,6 +63,8 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
       ),
     );
   }
+
+  void initMapStyle() {}
 }
 
 // How to set the zoom level
