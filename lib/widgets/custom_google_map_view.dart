@@ -120,6 +120,10 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
       ],
       color: Colors.amber,
       width: 5,
+      startCap: Cap.roundCap,
+      endCap: Cap.roundCap,
+      geodesic: true, // true means the polyline is a geodesic , not straight
+      patterns: [PatternItem.dot],
     );
     polylines.add(polyline);
   }
