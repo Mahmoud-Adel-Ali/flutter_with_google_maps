@@ -141,6 +141,14 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
 
   void initPolygons() {
     const polygon = Polygon(
+      // to draw holes in polygons
+      holes: [
+        [
+          LatLng(26.55800060103205, 31.697322615598104),
+          LatLng(26.559316417027457, 31.69567483739066),
+          LatLng(26.558651536641364, 31.695643649160477),
+        ]
+      ],
       polygonId: PolygonId('1'),
       points: [
         LatLng(26.55800060103205, 31.697322615598104),
