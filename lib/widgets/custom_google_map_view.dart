@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 import '../functions/init_circles.dart';
 import '../functions/init_markers.dart';
@@ -16,6 +17,7 @@ class CustomGoogleMapView extends StatefulWidget {
 class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
   late CameraPosition initialCameraPosition;
   late GoogleMapController mapController;
+  late Location location;
 
   @override
   void initState() {
@@ -25,10 +27,12 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
       zoom: 12,
     );
 
-    initMarkers();
-    initPolylines();
-    initPolygons();
-    initCircles();
+    // initMarkers();
+    // initPolylines();
+    // initPolygons();
+    // initCircles();
+    location = Location();
+    checkAndRequestLocationService();
   }
 
   @override
@@ -89,6 +93,19 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
     ).loadString('assets/map_styles/night_map_style.json');
 
     mapController.setMapStyle(nightMapStyle);
+  }
+
+  void checkAndRequestLocationService() async {
+    bool isServiceEnabled = await location.serviceEnabled();
+
+    if (!isServiceEnabled) {
+      isServiceEnabled = await location.requestService();
+
+      if (!isServiceEnabled) {
+        //TODO : show error bar
+        return;
+      }
+    }
   }
 }
 
