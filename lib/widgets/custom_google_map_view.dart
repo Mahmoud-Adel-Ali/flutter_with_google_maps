@@ -184,3 +184,12 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
 // City View : 8 -> 12
 // Street View : 13 -> 17
 // Building View : 18 -> 20
+
+//=============================================
+/// to access user location
+/// - check if location services are enabled
+/// - request permission
+/// - get location
+/// - Display user location on map
+/// - listen to location changes 
+/// 
