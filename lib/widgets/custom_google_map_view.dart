@@ -19,6 +19,7 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
 
   Set<Polyline> polylines = {};
   Set<Polygon> polygons = {};
+  Set<Circle> circles = {};
 
   @override
   void initState() {
@@ -31,6 +32,7 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
 
     initPolylines();
     initPolygons();
+    initCircles();
   }
 
   @override
@@ -45,6 +47,7 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
       body: Stack(
         children: [
           GoogleMap(
+            circles: circles,
             polygons: polygons,
             polylines: polylines,
             markers: markers,
@@ -140,26 +143,38 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
   }
 
   void initPolygons() {
-    const polygon = Polygon(
+    var polygon = Polygon(
       // to draw holes in polygons
-      holes: [
+      holes: const [
         [
           LatLng(26.55800060103205, 31.697322615598104),
           LatLng(26.559316417027457, 31.69567483739066),
           LatLng(26.558651536641364, 31.695643649160477),
         ]
       ],
-      polygonId: PolygonId('1'),
-      points: [
+      polygonId: const PolygonId('1'),
+      points: const [
         LatLng(26.55800060103205, 31.697322615598104),
         LatLng(26.559316417027457, 31.69567483739066),
         LatLng(26.558651536641364, 31.695643649160477),
       ],
       strokeWidth: 5,
-      strokeColor: Colors.greenAccent,
-      fillColor: Colors.greenAccent,
+      strokeColor: Colors.greenAccent.shade200,
+      fillColor: Colors.greenAccent.shade200,
     );
     polygons.add(polygon);
+  }
+
+  void initCircles() {
+    var circle = Circle(
+      circleId: const CircleId('1'),
+      center: const LatLng(26.558547000844204, 31.694578011009),
+      radius: 1000,
+      strokeWidth: 5,
+      strokeColor: Colors.redAccent.shade100,
+      fillColor: Colors.redAccent.shade100,
+    );
+    circles.add(circle);
   }
 }
 
