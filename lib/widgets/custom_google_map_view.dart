@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
-import '../functions/init_circles.dart';
-import '../functions/init_markers.dart';
-import '../functions/init_polygons.dart';
-import '../functions/init_polylines.dart';
-
 class CustomGoogleMapView extends StatefulWidget {
   const CustomGoogleMapView({super.key});
 
@@ -19,6 +14,7 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
   GoogleMapController? mapController;
   late Location location;
 
+  Set<Marker> markers = {};
   @override
   void initState() {
     super.initState();
@@ -47,9 +43,6 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
       body: Stack(
         children: [
           GoogleMap(
-            circles: circles,
-            polygons: polygons,
-            polylines: polylines,
             markers: markers,
             initialCameraPosition: initialCameraPosition,
             onMapCreated: (controller) {
@@ -128,13 +121,18 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
 
   Future<void> getLocationData() async {
     location.onLocationChanged.listen((locationData) {
-      var cameraPosition = CameraPosition(
-        target: LatLng(
-          locationData.latitude!,
-          locationData.longitude!,
-        ),
-        zoom: 12,
+      var latLng = LatLng(
+        locationData.latitude!,
+        locationData.longitude!,
       );
+      var cameraPosition = CameraPosition(target: latLng, zoom: 12);
+      var myLocationMarcker = Marker(
+        markerId: const MarkerId('1'),
+        position: latLng,
+        infoWindow: const InfoWindow(title: 'My Location'),
+      );
+      markers.add(myLocationMarcker);
+      setState(() {});
       mapController?.animateCamera(
         CameraUpdate.newCameraPosition(cameraPosition),
       );
