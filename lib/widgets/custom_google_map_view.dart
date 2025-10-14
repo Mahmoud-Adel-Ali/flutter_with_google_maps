@@ -26,13 +26,13 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
       target: LatLng(100, 100),
       zoom: 12,
     );
+    location = Location();
 
     // initMarkers();
     // initPolylines();
     // initPolygons();
     // initCircles();
-    location = Location();
-    checkAndRequestLocationService();
+    updateMyLocation();
   }
 
   @override
@@ -95,7 +95,7 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
     mapController.setMapStyle(nightMapStyle);
   }
 
-  void checkAndRequestLocationService() async {
+  Future<void> checkAndRequestLocationService() async {
     bool isServiceEnabled = await location.serviceEnabled();
 
     if (!isServiceEnabled) {
@@ -106,6 +106,27 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
         return;
       }
     }
+  }
+
+  Future<void> checkAndRequestLocationPermission() async {
+    var permissionStatus = await location.hasPermission();
+    if (permissionStatus == PermissionStatus.denied) {
+      permissionStatus = await location.requestPermission();
+      if (permissionStatus != PermissionStatus.granted) {
+        //TODO : show error bar
+        return;
+      }
+    }
+  }
+
+  Future<void> getLocationData() async {
+    location.onLocationChanged.listen((locationData) {});
+  }
+
+  void updateMyLocation() async {
+    await checkAndRequestLocationService();
+    await checkAndRequestLocationPermission();
+    await getLocationData();
   }
 }
 
