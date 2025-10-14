@@ -108,15 +108,21 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
     }
   }
 
-  Future<void> checkAndRequestLocationPermission() async {
+  Future<bool> checkAndRequestLocationPermission() async {
     var permissionStatus = await location.hasPermission();
-    if (permissionStatus == PermissionStatus.denied) {
+    if (permissionStatus == PermissionStatus.deniedForever) {
+      //TODO : show error bar
+      return false;
+    } else if (permissionStatus == PermissionStatus.denied) {
       permissionStatus = await location.requestPermission();
       if (permissionStatus != PermissionStatus.granted) {
         //TODO : show error bar
-        return;
+        return false;
+      } else {
+        return true;
       }
     }
+    return true;
   }
 
   Future<void> getLocationData() async {
@@ -125,7 +131,8 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
 
   void updateMyLocation() async {
     await checkAndRequestLocationService();
-    await checkAndRequestLocationPermission();
+    bool hasPermission = await checkAndRequestLocationPermission();
+    if (!hasPermission) return;
     await getLocationData();
   }
 }
