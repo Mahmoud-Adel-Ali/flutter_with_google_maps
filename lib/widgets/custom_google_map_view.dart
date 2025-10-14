@@ -120,6 +120,7 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
   }
 
   Future<void> getLocationData() async {
+    location.changeSettings(distanceFilter: 3);
     location.onLocationChanged.listen((locationData) {
       var latLng = LatLng(
         locationData.latitude!,
