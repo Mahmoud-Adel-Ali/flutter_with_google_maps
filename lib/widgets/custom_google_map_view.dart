@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../utils/location_service.dart';
+import '../utils/custom_location_service.dart';
 
 class CustomGoogleMapView extends StatefulWidget {
   const CustomGoogleMapView({super.key});
@@ -13,7 +13,7 @@ class CustomGoogleMapView extends StatefulWidget {
 class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
   late CameraPosition initialCameraPosition;
   GoogleMapController? mapController;
-  late LocationService locationService;
+  late CustomLocationService locationService;
   Set<Marker> markers = {};
   @override
   void initState() {
@@ -22,7 +22,7 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
       target: LatLng(100, 100),
       zoom: 12,
     );
-    locationService = LocationService();
+    locationService = CustomLocationService();
     // initMarkers();
     // initPolylines();
     // initPolygons();
