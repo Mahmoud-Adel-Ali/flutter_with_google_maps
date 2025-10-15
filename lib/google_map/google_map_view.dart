@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class GoogleMapView extends StatelessWidget {
+class GoogleMapView extends StatefulWidget {
   const GoogleMapView({super.key});
+
+  @override
+  State<GoogleMapView> createState() => _GoogleMapViewState();
+}
+
+class _GoogleMapViewState extends State<GoogleMapView> {
+  late CameraPosition initialCameraPosition;
+
+  @override
+  void initState() {
+    super.initState();
+    initialCameraPosition = const CameraPosition(target: LatLng(0, 0));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Google Map View'),
+        child: GoogleMap(
+          initialCameraPosition: initialCameraPosition,
+          zoomControlsEnabled: false,
+        ),
       ),
     );
   }
