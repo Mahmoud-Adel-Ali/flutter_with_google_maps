@@ -28,4 +28,9 @@ class LocationService {
     location.changeSettings(distanceFilter: 3);
     location.onLocationChanged.listen(onData);
   }
+
+  Future<LocationData> getLocation() async {
+    final locationData = await location.getLocation();
+    return locationData;
+  }
 }
