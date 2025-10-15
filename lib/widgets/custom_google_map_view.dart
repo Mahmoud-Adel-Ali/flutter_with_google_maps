@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+
+import '../utils/location_service.dart';
 
 class CustomGoogleMapView extends StatefulWidget {
   const CustomGoogleMapView({super.key});
@@ -12,8 +13,7 @@ class CustomGoogleMapView extends StatefulWidget {
 class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
   late CameraPosition initialCameraPosition;
   GoogleMapController? mapController;
-  late Location location;
-
+  late LocationService locationService;
   Set<Marker> markers = {};
   @override
   void initState() {
@@ -22,8 +22,7 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
       target: LatLng(100, 100),
       zoom: 12,
     );
-    location = Location();
-
+    locationService = LocationService();
     // initMarkers();
     // initPolylines();
     // initPolygons();
@@ -89,62 +88,30 @@ class _CustomGoogleMapViewState extends State<CustomGoogleMapView> {
     mapController!.setMapStyle(nightMapStyle);
   }
 
-  Future<void> checkAndRequestLocationService() async {
-    bool isServiceEnabled = await location.serviceEnabled();
-
-    if (!isServiceEnabled) {
-      isServiceEnabled = await location.requestService();
-
-      if (!isServiceEnabled) {
-        //TODO : show error bar
-        return;
-      }
-    }
+  void updateCameraLatLng(LatLng latLng) {
+    mapController?.animateCamera(CameraUpdate.newLatLng(latLng));
   }
 
-  Future<bool> checkAndRequestLocationPermission() async {
-    var permissionStatus = await location.hasPermission();
-    if (permissionStatus == PermissionStatus.deniedForever) {
-      //TODO : show error bar
-      return false;
-    } else if (permissionStatus == PermissionStatus.denied) {
-      permissionStatus = await location.requestPermission();
-      if (permissionStatus != PermissionStatus.granted) {
-        //TODO : show error bar
-        return false;
-      } else {
-        return true;
-      }
-    }
-    return true;
-  }
-
-  Future<void> getLocationData() async {
-    location.changeSettings(distanceFilter: 3);
-    location.onLocationChanged.listen((locationData) {
-      var latLng = LatLng(
-        locationData.latitude!,
-        locationData.longitude!,
-      );
-      var cameraPosition = CameraPosition(target: latLng, zoom: 12);
-      var myLocationMarcker = Marker(
-        markerId: const MarkerId('1'),
-        position: latLng,
-        infoWindow: const InfoWindow(title: 'My Location'),
-      );
-      markers.add(myLocationMarcker);
-      setState(() {});
-      mapController?.animateCamera(
-        CameraUpdate.newCameraPosition(cameraPosition),
-      );
-    });
+  void setMyLocationMarcker(LatLng latLng) {
+    var myLocationMarcker = Marker(
+      markerId: const MarkerId('1'),
+      position: latLng,
+      infoWindow: const InfoWindow(title: 'My Location'),
+    );
+    markers.add(myLocationMarcker);
+    setState(() {});
   }
 
   void updateMyLocation() async {
-    await checkAndRequestLocationService();
-    bool hasPermission = await checkAndRequestLocationPermission();
+    await locationService.checkAndRequestLocationService();
+    bool hasPermission =
+        await locationService.checkAndRequestLocationPermission();
     if (!hasPermission) return;
-    await getLocationData();
+    locationService.getRealTimeLocationData((locationData) {
+      var latLng = LatLng(locationData.latitude!, locationData.longitude!);
+      setMyLocationMarcker(latLng);
+      updateCameraLatLng(latLng);
+    });
   }
 }
 
