@@ -72,3 +72,10 @@ class _GoogleMapViewState extends State<GoogleMapView> {
     setState(() {});
   }
 }
+
+
+/// 64,65. Steps to Build App and display place
+/// create text field
+/// listen to text field
+/// search place
+/// display place [routes, place name, address]
